@@ -1,7 +1,10 @@
 #include "render.h"
 #include "game.h"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
+#if defined(NXDK)
+#include <hal/video.h>
+#endif
 
 int window_w, window_h;
 SDL_Window *window;
@@ -13,13 +16,13 @@ int input_fwd, input_bwd, input_left, input_right;
 
 static int handleevents()
 {
-	SDL_Event ev;
+	SDL_Event event;
 	
-	while(SDL_PollEvent(&ev))
+	while(SDL_PollEvent(&event))
 	{
-		if(ev.type == SDL_QUIT) return 0;
+		if(event.type == SDL_QUIT) return 0;
 		
-		if(ev.type == SDL_KEYDOWN)
+		if(event.type == SDL_KEYDOWN)
 		{
 			extern struct tile *tiles;
 			extern int current_tile;
@@ -78,7 +81,7 @@ static int handleevents()
 			}
 		}
 		
-		if(ev.type == SDL_KEYUP)
+		if(event.type == SDL_KEYUP)
 		{
 			switch(ev.key.keysym.scancode)
 			{
